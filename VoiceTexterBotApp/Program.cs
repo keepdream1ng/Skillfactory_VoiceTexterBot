@@ -28,7 +28,7 @@ namespace VoiceTexterBotApp
         static void ConfigureServices(IServiceCollection services)
         {
             // Регистрируем объект TelegramBotClient c токеном подключения
-            services.AddSingleton<ITelegramBotClient>(provider => new TelegramBotClient("BOT_TOKEN"));
+            services.AddSingleton<ITelegramBotClient>(provider => new TelegramBotClient("Insert_Token!"));
             // Регистрируем постоянно активный сервис бота
             services.AddHostedService<Bot>();
         }
