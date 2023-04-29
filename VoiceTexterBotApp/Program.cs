@@ -5,6 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Telegram.Bot;
 using VoiceTexterBotApp.Controllers;
+using VoiceTexterBotApp.Controllers;
 
 namespace VoiceTexterBotApp
 {
@@ -14,9 +15,13 @@ namespace VoiceTexterBotApp
         {
             Console.OutputEncoding = Encoding.Unicode;
 
+            Console.WriteLine("Input token for bot.");
+            string _token = Console.ReadLine();
+
+
             // Объект, отвечающий за постоянный жизненный цикл приложения
             var host = new HostBuilder()
-                .ConfigureServices((hostContext, services) => ConfigureServices(services)) // Задаем конфигурацию
+                .ConfigureServices((hostContext, services) => ConfigureServices(services, _token)) // Задаем конфигурацию
                 .UseConsoleLifetime()
                 .Build();
 
@@ -26,10 +31,16 @@ namespace VoiceTexterBotApp
             Console.WriteLine("Service is stopped.");
         }
 
-        static void ConfigureServices(IServiceCollection services)
+        static void ConfigureServices(IServiceCollection services, string token)
         {
+            services.AddTransient<DefaultMessageController>();
+            services.AddTransient<VoiceMessageController>();
+            services.AddTransient<TextMessageController>();
+            services.AddTransient<InlineKeyboardController>();
+
+
             // Регистрируем объект TelegramBotClient c токеном подключения
-            services.AddSingleton<ITelegramBotClient>(provider => new TelegramBotClient("Insert_Token!"));
+            services.AddSingleton<ITelegramBotClient>(provider => new TelegramBotClient(token));
             // Регистрируем постоянно активный сервис бота
             services.AddHostedService<Bot>();
         }

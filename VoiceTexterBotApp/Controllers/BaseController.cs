@@ -5,10 +5,8 @@ namespace VoiceTexterBotApp.Controllers
 {
     public abstract class BaseController
     {
-        private readonly ITelegramBotClient _telegramClient;
-        protected virtual string _returnMessage { get; set; } = "Получено сообщение";
-
-        public string Hi = "hi";
+        protected readonly ITelegramBotClient _telegramClient;
+        protected virtual string _returnMessage { get; set; } = "Text message received";
 
         public BaseController(ITelegramBotClient telegramBotClient)
         {
