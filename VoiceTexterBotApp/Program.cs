@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Telegram.Bot;
+using VoiceTexterBotApp.Controllers;
 
 namespace VoiceTexterBotApp
 {
@@ -16,13 +17,13 @@ namespace VoiceTexterBotApp
             // Объект, отвечающий за постоянный жизненный цикл приложения
             var host = new HostBuilder()
                 .ConfigureServices((hostContext, services) => ConfigureServices(services)) // Задаем конфигурацию
-                .UseConsoleLifetime() // Позволяет поддерживать приложение активным в консоли
-                .Build(); // Собираем
+                .UseConsoleLifetime()
+                .Build();
 
-            Console.WriteLine("Сервис запущен");
+            Console.WriteLine("Service is started.");
             // Запускаем сервис
             await host.RunAsync();
-            Console.WriteLine("Сервис остановлен");
+            Console.WriteLine("Service is stopped.");
         }
 
         static void ConfigureServices(IServiceCollection services)

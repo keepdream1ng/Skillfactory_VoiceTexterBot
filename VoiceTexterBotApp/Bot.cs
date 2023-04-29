@@ -21,10 +21,10 @@ namespace VoiceTexterBotApp
             _telegramClient.StartReceiving(
                 HandleUpdateAsync,
                 HandleErrorAsync,
-                new Telegram.Bot.Polling.ReceiverOptions() { AllowedUpdates = { } }, // Здесь выбираем, какие обновления хотим получать. В данном случае разрешены все
+                new Telegram.Bot.Polling.ReceiverOptions() { AllowedUpdates = { } }, 
                 cancellationToken: stoppingToken);
 
-            Console.WriteLine("Бот запущен");
+            Console.WriteLine("Bot started.");
         }
 
         async Task HandleUpdateAsync(ITelegramBotClient botClient, Update update, CancellationToken cancellationToken)
