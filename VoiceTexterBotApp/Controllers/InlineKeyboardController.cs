@@ -3,12 +3,12 @@ using Telegram.Bot.Types;
 
 namespace VoiceTexterBotApp.Controllers
 {
-    public class InlineKeyboardController : BaseController
+    public class InlineKeyboardController : BaseController, IInlineKeyboardController
     {
         protected override string _returnMessage { get; set; } = "Button press detected";
         public InlineKeyboardController(ITelegramBotClient telegramBotClient) : base(telegramBotClient) { }
 
-        public async Task Handle(CallbackQuery? callbackQuery, CancellationToken ct)
+        public async Task HandleAsync(CallbackQuery? callbackQuery, CancellationToken ct)
         {
             Console.WriteLine($"Контроллер {GetType().Name} обнаружил нажатие на кнопку");
 

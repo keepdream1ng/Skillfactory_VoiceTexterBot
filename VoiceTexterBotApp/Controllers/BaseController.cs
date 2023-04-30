@@ -13,7 +13,7 @@ namespace VoiceTexterBotApp.Controllers
             _telegramClient = telegramBotClient;
         }
 
-        public virtual async Task Handle(Message message, CancellationToken ct)
+        public virtual async Task HandleAsync(Message message, CancellationToken ct)
         {
             Console.WriteLine($"Контроллер {GetType().Name} получил сообщение");
             await _telegramClient.SendTextMessageAsync(message.Chat.Id, _returnMessage, cancellationToken: ct);

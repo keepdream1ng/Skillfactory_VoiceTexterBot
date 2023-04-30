@@ -3,7 +3,7 @@ using Telegram.Bot.Types;
 
 namespace VoiceTexterBotApp.Controllers
 {
-    public class DefaultMessageController : BaseController
+    public class DefaultMessageController : BaseController , IDefaultMessageController
     {
         protected override string _returnMessage { get; set; } = "Unsupported format message received.";
         public DefaultMessageController(ITelegramBotClient telegramBotClient) : base(telegramBotClient) { }

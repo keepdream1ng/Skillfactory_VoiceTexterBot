@@ -3,7 +3,7 @@ using Telegram.Bot.Types;
 
 namespace VoiceTexterBotApp.Controllers
 {
-    public class TextMessageController : BaseController
+    public class TextMessageController : BaseController , ITextMessageController
     {
         public TextMessageController(ITelegramBotClient telegramBotClient) : base(telegramBotClient) { }
     }
