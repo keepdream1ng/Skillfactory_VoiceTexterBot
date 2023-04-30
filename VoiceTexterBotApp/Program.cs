@@ -4,7 +4,9 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Telegram.Bot;
+using VoiceTexterBotApp.Configuration;
 using VoiceTexterBotApp.Controllers;
+using VoiceTexterBotApp.Services;
 
 namespace VoiceTexterBotApp
 {
@@ -14,13 +16,9 @@ namespace VoiceTexterBotApp
         {
             Console.OutputEncoding = Encoding.Unicode;
 
-            Console.WriteLine("Input token for bot.");
-            string _token = Console.ReadLine();
-
-
             // Объект, отвечающий за постоянный жизненный цикл приложения
             var host = new HostBuilder()
-                .ConfigureServices((hostContext, services) => ConfigureServices(services, _token)) // Задаем конфигурацию
+                .ConfigureServices((hostContext, services) => ConfigureServices(services)) // Задаем конфигурацию
                 .UseConsoleLifetime()
                 .Build();
 
@@ -30,18 +28,28 @@ namespace VoiceTexterBotApp
             Console.WriteLine("Service is stopped.");
         }
 
-        static void ConfigureServices(IServiceCollection services, string token)
+        static void ConfigureServices(IServiceCollection services)
         {
+            AppSettings appSettings = BuildAppSettings();
             services.AddTransient<IDefaultMessageController, DefaultMessageController>();
             services.AddTransient<IVoiceMessageController, VoiceMessageController>();
             services.AddTransient<ITextMessageController, TextMessageController>();
             services.AddTransient<IInlineKeyboardController, InlineKeyboardController>();
+            services.AddSingleton<IStorage, MemoryStorage>();
 
 
             // Регистрируем объект TelegramBotClient c токеном подключения
-            services.AddSingleton<ITelegramBotClient>(provider => new TelegramBotClient(token));
+            services.AddSingleton<ITelegramBotClient>(provider => new TelegramBotClient(appSettings.BotToken));
             // Регистрируем постоянно активный сервис бота
             services.AddHostedService<Bot>();
+        }
+        static AppSettings BuildAppSettings()
+        {
+            Console.WriteLine("Input token for bot.");
+            return new AppSettings()
+            {
+                BotToken = Console.ReadLine(),
+            };
         }
     }
 }
