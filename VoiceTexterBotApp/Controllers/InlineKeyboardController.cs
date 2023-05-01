@@ -2,6 +2,7 @@
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
 using VoiceTexterBotApp.Services;
+using VoiceTexterBotApp.Configuration;
 
 namespace VoiceTexterBotApp.Controllers
 {
@@ -9,7 +10,7 @@ namespace VoiceTexterBotApp.Controllers
     {
         private readonly IStorage _memoryStorage;
         protected override string _returnMessage { get; set; } = "Button press detected";
-        public InlineKeyboardController(ITelegramBotClient telegramBotClient, IStorage memoryStorage) : base(telegramBotClient)
+        public InlineKeyboardController(AppSettings appSettings, ITelegramBotClient telegramBotClient, IStorage memoryStorage) : base(appSettings, telegramBotClient)
         {
             _memoryStorage = memoryStorage;
         }

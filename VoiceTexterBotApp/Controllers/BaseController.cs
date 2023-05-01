@@ -1,15 +1,19 @@
 ﻿using Telegram.Bot;
 using Telegram.Bot.Types;
+using VoiceTexterBotApp.Configuration;
 
 namespace VoiceTexterBotApp.Controllers
 {
     public abstract class BaseController
     {
+        private readonly AppSettings _appSettings;
+
         protected readonly ITelegramBotClient _telegramClient;
         protected virtual string _returnMessage { get; set; } = "Text message received";
 
-        public BaseController(ITelegramBotClient telegramBotClient)
+        public BaseController(AppSettings appSettings, ITelegramBotClient telegramBotClient)
         {
+            _appSettings = appSettings;
             _telegramClient = telegramBotClient;
         }
 

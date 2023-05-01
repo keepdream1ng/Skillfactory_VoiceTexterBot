@@ -53,6 +53,7 @@ namespace VoiceTexterBotApp
                 BotToken = Console.ReadLine(),
                 AudioFileName = "audio",
                 InputAudioFormat = "ogg",
+                OutputAudioFormat = "wav",
                 DownloadsFolder = "C:\\Users\\Public\\Downloads",
             };
         }

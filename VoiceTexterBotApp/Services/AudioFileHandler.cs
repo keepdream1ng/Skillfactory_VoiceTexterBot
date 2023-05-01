@@ -2,6 +2,7 @@
 using Telegram.Bot;
 using VoiceTexterBotApp.Configuration;
 using VoiceTexterBotApp.Services;
+using VoiceTexterBotApp.Utilities;
 
 namespace VoiceTexterBotApp.Services
 {
@@ -33,10 +34,16 @@ namespace VoiceTexterBotApp.Services
             }
         }
 
-        public string Process(string languageCode)
+        public string Process(string inputParam)
         {
-            // Метод пока не реализован
-            throw new NotImplementedException();
+            string inputAudioPath = Path.Combine(_appSettings.DownloadsFolder, $"{_appSettings.AudioFileName}.{_appSettings.InputAudioFormat}");
+            string outputAudioPath = Path.Combine(_appSettings.DownloadsFolder, $"{_appSettings.AudioFileName}.{_appSettings.OutputAudioFormat}");
+
+            Console.WriteLine("Начинаем конвертацию...");
+            AudioConverter.TryConvert(inputAudioPath, outputAudioPath);
+            Console.WriteLine("Файл конвертирован");
+
+            return "Конвертация успешно завершена";
         }
     }
 }

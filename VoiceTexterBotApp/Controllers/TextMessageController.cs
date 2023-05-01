@@ -2,12 +2,13 @@
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
 using Telegram.Bot.Types.ReplyMarkups;
+using VoiceTexterBotApp.Configuration;
 
 namespace VoiceTexterBotApp.Controllers
 {
     public class TextMessageController : BaseController , ITextMessageController
     {
-        public TextMessageController(ITelegramBotClient telegramBotClient) : base(telegramBotClient) { }
+        public TextMessageController(AppSettings appSettings, ITelegramBotClient telegramBotClient) : base(appSettings, telegramBotClient) { }
 
         public override async Task HandleAsync(Message message, CancellationToken ct)
         {

@@ -21,5 +21,10 @@
         /// Audio message file format.
         /// </summary>
         public string InputAudioFormat { get; set; }
+
+        /// <summary>
+        /// File format converter does conversion in to.
+        /// </summary>
+        public string OutputAudioFormat { get; set; }
     }
 }
