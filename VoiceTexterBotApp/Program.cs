@@ -31,10 +31,12 @@ namespace VoiceTexterBotApp
         static void ConfigureServices(IServiceCollection services)
         {
             AppSettings appSettings = BuildAppSettings();
+            services.AddSingleton(appSettings);
             services.AddTransient<IDefaultMessageController, DefaultMessageController>();
             services.AddTransient<IVoiceMessageController, VoiceMessageController>();
             services.AddTransient<ITextMessageController, TextMessageController>();
             services.AddTransient<IInlineKeyboardController, InlineKeyboardController>();
+            services.AddTransient<IFileHandler, AudioFileHandler>();
             services.AddSingleton<IStorage, MemoryStorage>();
 
 
@@ -49,6 +51,9 @@ namespace VoiceTexterBotApp
             return new AppSettings()
             {
                 BotToken = Console.ReadLine(),
+                AudioFileName = "audio",
+                InputAudioFormat = "ogg",
+                DownloadsFolder = "C:\\Users\\Public\\Downloads",
             };
         }
     }

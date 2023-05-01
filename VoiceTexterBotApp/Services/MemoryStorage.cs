@@ -6,7 +6,7 @@ namespace VoiceTexterBotApp.Services
     public class MemoryStorage : IStorage
     {
         /// <summary>
-        /// Session storage 
+        /// Session storage.
         /// </summary>
         private readonly ConcurrentDictionary<long, Session> _sessions;
 
