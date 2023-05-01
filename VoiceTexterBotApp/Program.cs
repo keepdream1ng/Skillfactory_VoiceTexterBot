@@ -16,16 +16,18 @@ namespace VoiceTexterBotApp
         {
             Console.OutputEncoding = Encoding.Unicode;
 
-            // Объект, отвечающий за постоянный жизненный цикл приложения
+            ISimpleLogger logService = new Logger();
+
             var host = new HostBuilder()
-                .ConfigureServices((hostContext, services) => ConfigureServices(services)) // Задаем конфигурацию
+                .ConfigureServices((hostContext, services) => ConfigureServices(services))
+                .ConfigureServices((hostContext, services) => services.AddSingleton(logService))
                 .UseConsoleLifetime()
                 .Build();
 
-            Console.WriteLine("Service is started.");
-            // Запускаем сервис
+
+            logService.Log("Service is started.");
             await host.RunAsync();
-            Console.WriteLine("Service is stopped.");
+            logService.Log("Service is stopped.");
         }
 
         static void ConfigureServices(IServiceCollection services)
@@ -54,7 +56,8 @@ namespace VoiceTexterBotApp
                 AudioFileName = "audio",
                 InputAudioFormat = "ogg",
                 OutputAudioFormat = "wav",
-                DownloadsFolder = "C:\\Users\\Public\\Downloads",
+                DownloadsFolder = Directory.CreateDirectory(Path.Combine(Directory.GetCurrentDirectory(), "TEMP")).FullName,
+                // Based on the tests i've done 50000 is acceptable bitrate.
                 InputAudioBitrate = 50000,
             };
         }

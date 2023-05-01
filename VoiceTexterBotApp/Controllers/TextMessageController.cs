@@ -3,15 +3,17 @@ using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
 using Telegram.Bot.Types.ReplyMarkups;
 using VoiceTexterBotApp.Configuration;
+using VoiceTexterBotApp.Services;
 
 namespace VoiceTexterBotApp.Controllers
 {
     public class TextMessageController : BaseController , ITextMessageController
     {
-        public TextMessageController(AppSettings appSettings, ITelegramBotClient telegramBotClient) : base(appSettings, telegramBotClient) { }
+        public TextMessageController(AppSettings appSettings,ISimpleLogger logger, ITelegramBotClient telegramBotClient) : base(appSettings, logger, telegramBotClient) { }
 
         public override async Task HandleAsync(Message message, CancellationToken ct)
         {
+            _logger.Log($"Controller {GetType().Name} get a message \"{message.Text}\".");
             switch (message.Text)
             {
                 case "/start":

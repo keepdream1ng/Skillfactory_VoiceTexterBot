@@ -10,7 +10,8 @@ namespace VoiceTexterBotApp.Controllers
     {
         private readonly IStorage _memoryStorage;
         protected override string _returnMessage { get; set; } = "Button press detected";
-        public InlineKeyboardController(AppSettings appSettings, ITelegramBotClient telegramBotClient, IStorage memoryStorage) : base(appSettings, telegramBotClient)
+        public InlineKeyboardController(AppSettings appSettings, ITelegramBotClient telegramBotClient, ISimpleLogger logger, IStorage memoryStorage) 
+            : base(appSettings, logger, telegramBotClient)
         {
             _memoryStorage = memoryStorage;
         }

@@ -19,7 +19,9 @@ namespace VoiceTexterBotApp.Services
         {
             // Returning existing session. 
             if (_sessions.ContainsKey(chatId))
+            {
                 return _sessions[chatId];
+            }
 
             // Creating new one otherwise.
             var newSession = new Session() { LanguageCode = "ru" };

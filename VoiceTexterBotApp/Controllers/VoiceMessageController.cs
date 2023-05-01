@@ -9,9 +9,8 @@ namespace VoiceTexterBotApp.Controllers
     {
         private readonly IFileHandler _audioFileHandler;
         private readonly IStorage _memoryStorage;
-        protected override string _returnMessage { get; set; } = "Voice message downloaded.";
-        public VoiceMessageController(AppSettings appSettings, ITelegramBotClient telegramBotClient,
-            IFileHandler audioFileHandler, IStorage memoryStorage) : base(appSettings, telegramBotClient)
+        public VoiceMessageController(AppSettings appSettings, ISimpleLogger logger, ITelegramBotClient telegramBotClient,
+            IFileHandler audioFileHandler, IStorage memoryStorage) : base(appSettings, logger, telegramBotClient)
         {
             _audioFileHandler = audioFileHandler;
             _memoryStorage = memoryStorage;
@@ -20,10 +19,16 @@ namespace VoiceTexterBotApp.Controllers
         {
             var fileId = message.Voice?.FileId;
             if (fileId == null)
+            {
+                _logger.Log($"Controller {GetType().Name} cant find an audio file.");
                 return;
+            }
 
+            _logger.Log($"Controller {GetType().Name} get an voice message.");
             await _audioFileHandler.Download(fileId, ct);
+            _logger.Log($"Controller {GetType().Name} downloaded the file.");
             var textResult = _audioFileHandler.Process(_memoryStorage.GetSession(message.Chat.Id).LanguageCode);
+            _logger.Log($"Controller {GetType().Name} conversation result is:{Environment.NewLine}{textResult}.");
             await _telegramClient.SendTextMessageAsync(message.Chat.Id, textResult, cancellationToken: ct);
         }
     }

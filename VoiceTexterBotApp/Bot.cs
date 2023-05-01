@@ -1,16 +1,19 @@
 ﻿using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using Microsoft.VisualBasic;
 using Telegram.Bot;
 using Telegram.Bot.Exceptions;
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
 using VoiceTexterBotApp.Controllers;
+using VoiceTexterBotApp.Services;
 
 namespace VoiceTexterBotApp
 {
     internal class Bot : BackgroundService
     {
         private ITelegramBotClient _telegramClient;
+        private ISimpleLogger _logger;
 
         private IInlineKeyboardController _inlineKeyboardController;
         private ITextMessageController _textMessageController;
@@ -19,12 +22,14 @@ namespace VoiceTexterBotApp
 
         public Bot(
             ITelegramBotClient telegramClient,
+            ISimpleLogger logger,
             IInlineKeyboardController inlineKeyboardController,
             ITextMessageController textMessageController,
             IVoiceMessageController voiceMessageController,
             IDefaultMessageController defaultMessageController)
         {
             _telegramClient = telegramClient;
+            _logger = logger;
             _inlineKeyboardController = inlineKeyboardController;
             _textMessageController = textMessageController;
             _voiceMessageController = voiceMessageController;
@@ -40,7 +45,7 @@ namespace VoiceTexterBotApp
                 new Telegram.Bot.Polling.ReceiverOptions() { AllowedUpdates = { } }, 
                 cancellationToken: stoppingToken);
 
-            Console.WriteLine("Bot started.");
+            _logger.Log("Bot started.");
         }
 
         async Task HandleUpdateAsync(ITelegramBotClient botClient, Update update, CancellationToken cancellationToken)
@@ -72,7 +77,6 @@ namespace VoiceTexterBotApp
 
         Task HandleErrorAsync(ITelegramBotClient botClient, Exception exception, CancellationToken cancellationToken)
         {
-            // Задаем сообщение об ошибке в зависимости от того, какая именно ошибка произошла
             var errorMessage = exception switch
             {
                 ApiRequestException apiRequestException
@@ -80,11 +84,9 @@ namespace VoiceTexterBotApp
                 _ => exception.ToString()
             };
 
-            // Выводим в консоль информацию об ошибке
-            Console.WriteLine(errorMessage);
+            _logger.Log(errorMessage);
 
-            // Задержка перед повторным подключением
-            Console.WriteLine("Waiting 10 seconds to reconnect.");
+            _logger.Log("Waiting 10 seconds to reconnect.");
             Thread.Sleep(10000);
 
             return Task.CompletedTask;
