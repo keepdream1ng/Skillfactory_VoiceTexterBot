@@ -84,7 +84,7 @@ namespace VoiceTexterBotApp
             Console.WriteLine(errorMessage);
 
             // Задержка перед повторным подключением
-            Console.WriteLine("Ожидаем 10 секунд перед повторным подключением.");
+            Console.WriteLine("Waiting 10 seconds to reconnect.");
             Thread.Sleep(10000);
 
             return Task.CompletedTask;
