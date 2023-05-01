@@ -55,6 +55,7 @@ namespace VoiceTexterBotApp
                 InputAudioFormat = "ogg",
                 OutputAudioFormat = "wav",
                 DownloadsFolder = "C:\\Users\\Public\\Downloads",
+                InputAudioBitrate = 768,
             };
         }
     }

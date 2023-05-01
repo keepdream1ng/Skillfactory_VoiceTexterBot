@@ -1,5 +1,4 @@
-﻿using VoiceTexterBotApp.Configuration;
-using Telegram.Bot;
+﻿using Telegram.Bot;
 using VoiceTexterBotApp.Configuration;
 using VoiceTexterBotApp.Services;
 using VoiceTexterBotApp.Utilities;
@@ -34,7 +33,7 @@ namespace VoiceTexterBotApp.Services
             }
         }
 
-        public string Process(string inputParam)
+        public string Process(string languageCode)
         {
             string inputAudioPath = Path.Combine(_appSettings.DownloadsFolder, $"{_appSettings.AudioFileName}.{_appSettings.InputAudioFormat}");
             string outputAudioPath = Path.Combine(_appSettings.DownloadsFolder, $"{_appSettings.AudioFileName}.{_appSettings.OutputAudioFormat}");
@@ -43,7 +42,10 @@ namespace VoiceTexterBotApp.Services
             AudioConverter.TryConvert(inputAudioPath, outputAudioPath);
             Console.WriteLine("Файл конвертирован");
 
-            return "Конвертация успешно завершена";
+            Console.WriteLine("Начинаем распознавание...");
+            var speechText = SpeechDetector.DetectSpeech(outputAudioPath, _appSettings.InputAudioBitrate, languageCode);
+            Console.WriteLine("Файл распознан.");
+            return speechText;
         }
     }
 }

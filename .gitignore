@@ -6,6 +6,8 @@
 # Converter
 FFmpeg-win64/
 
+Speech-models/
+
 # User-specific files
 *.rsuser
 *.suo

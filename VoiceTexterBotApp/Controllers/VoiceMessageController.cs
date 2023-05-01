@@ -23,9 +23,8 @@ namespace VoiceTexterBotApp.Controllers
                 return;
 
             await _audioFileHandler.Download(fileId, ct);
-            _audioFileHandler.Process(_memoryStorage.GetSession(message.Chat.Id).LanguageCode);
-
-            await _telegramClient.SendTextMessageAsync(message.Chat.Id, _returnMessage, cancellationToken: ct);
+            var textResult = _audioFileHandler.Process(_memoryStorage.GetSession(message.Chat.Id).LanguageCode);
+            await _telegramClient.SendTextMessageAsync(message.Chat.Id, textResult, cancellationToken: ct);
         }
     }
 }

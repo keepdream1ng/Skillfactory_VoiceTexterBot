@@ -26,5 +26,10 @@
         /// File format converter does conversion in to.
         /// </summary>
         public string OutputAudioFormat { get; set; }
+
+        /// <summary>
+        /// .wav file bit rate.
+        /// </summary>
+        public float InputAudioBitrate { get; set; }
     }
 }
