@@ -12,6 +12,17 @@ namespace VoiceTexterBotApp.Utilities
             Vosk.Vosk.SetLogLevel(0);
             var modelPath = Path.Combine(DirectoryExtension.GetSolutionRoot(), "Speech-models", $"vosk-model-small-{languageCode.ToLower()}");
             Model model = new(modelPath);
+            
+            // Getting test results from different bitrate.
+            //var result = new StringBuilder();
+            //for (int i = 1; i < 11; i++)
+            //{
+            //    result.AppendLine($"{Environment.NewLine}bitrate {inputBitrate}:{Environment.NewLine}");
+            //    result.AppendLine(GetWords(model, audioPath, inputBitrate));
+            //    inputBitrate += i * 100;
+            //}
+            //return result.ToString();
+
             return GetWords(model, audioPath, inputBitrate);
         }
 
