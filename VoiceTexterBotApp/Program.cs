@@ -1,4 +1,6 @@
 ﻿using System;
+using System.IO;
+using System.Text.Json;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
@@ -49,17 +51,15 @@ namespace VoiceTexterBotApp
         }
         static AppSettings BuildAppSettings()
         {
-            Console.WriteLine("Input token for bot.");
-            return new AppSettings()
+            string _jsonString = File.ReadAllText(Path.Combine(Extensions.DirectoryExtension.GetSolutionRoot(), "AppSettings.json"));
+            var settings = JsonSerializer.Deserialize<AppSettings>(_jsonString);
+            if (settings.BotToken == "INCERT_TOKEN_HERE")
             {
-                BotToken = Console.ReadLine(),
-                AudioFileName = "audio",
-                InputAudioFormat = "ogg",
-                OutputAudioFormat = "wav",
-                DownloadsFolder = Directory.CreateDirectory(Path.Combine(Directory.GetCurrentDirectory(), "TEMP")).FullName,
-                // Based on the tests i've done 50000 is acceptable bitrate.
-                InputAudioBitrate = 50000,
-            };
+                Console.WriteLine("You didnt adjust the AppSetting.json file, so input your bot token here:");
+                settings.BotToken = Console.ReadLine();
+            }
+            settings.DownloadsFolder = Directory.CreateDirectory(Path.Combine(Directory.GetCurrentDirectory(), "TEMP")).FullName;
+            return settings;
         }
     }
 }

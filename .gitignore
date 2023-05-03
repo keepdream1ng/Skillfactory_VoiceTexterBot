@@ -4,9 +4,11 @@
 ## Get latest from https://github.com/github/gitignore/blob/master/VisualStudio.gitignore
 
 # Converter
-FFmpeg-win64/
+FFmpeg-win64/*
+!FFmpeg-win64/Readme.txt
 
-Speech-models/
+Speech-models/*
+!Speech-models/Readme.txt
 
 # User-specific files
 *.rsuser

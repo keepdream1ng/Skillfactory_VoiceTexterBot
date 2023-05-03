@@ -15,7 +15,7 @@ namespace VoiceTexterBotApp.Controllers
             _audioFileHandler = audioFileHandler;
             _memoryStorage = memoryStorage;
         }
-        public async Task HandleAsync(Message message, CancellationToken ct)
+        public override async Task HandleAsync(Message message, CancellationToken ct)
         {
             var fileId = message.Voice?.FileId;
             if (fileId == null)
