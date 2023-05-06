@@ -8,13 +8,9 @@ namespace VoiceTexterBotApp.Controllers
 {
     public class InlineKeyboardController : BaseController, IInlineKeyboardController
     {
-        private readonly IStorage _memoryStorage;
         protected override string _returnMessage { get; set; } = "Button press detected";
         public InlineKeyboardController(AppSettings appSettings, ITelegramBotClient telegramBotClient, ISimpleLogger logger, IStorage memoryStorage) 
-            : base(appSettings, logger, telegramBotClient)
-        {
-            _memoryStorage = memoryStorage;
-        }
+            : base(appSettings, logger, telegramBotClient, memoryStorage) { }
 
         public async Task HandleAsync(CallbackQuery? callbackQuery, CancellationToken ct)
         {

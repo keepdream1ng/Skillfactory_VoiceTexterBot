@@ -9,7 +9,8 @@ namespace VoiceTexterBotApp.Controllers
 {
     public class TextMessageController : BaseController , ITextMessageController
     {
-        public TextMessageController(AppSettings appSettings,ISimpleLogger logger, ITelegramBotClient telegramBotClient) : base(appSettings, logger, telegramBotClient) { }
+        public TextMessageController(AppSettings appSettings, ITelegramBotClient telegramBotClient, ISimpleLogger logger, IStorage memoryStorage)
+            : base(appSettings, logger, telegramBotClient, memoryStorage) { }
 
         public override async Task HandleAsync(Message message, CancellationToken ct)
         {

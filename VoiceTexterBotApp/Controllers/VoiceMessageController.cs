@@ -8,12 +8,10 @@ namespace VoiceTexterBotApp.Controllers
     public class VoiceMessageController : BaseController , IVoiceMessageController
     {
         private readonly IFileHandler _audioFileHandler;
-        private readonly IStorage _memoryStorage;
         public VoiceMessageController(AppSettings appSettings, ISimpleLogger logger, ITelegramBotClient telegramBotClient,
-            IFileHandler audioFileHandler, IStorage memoryStorage) : base(appSettings, logger, telegramBotClient)
+            IFileHandler audioFileHandler, IStorage memoryStorage) : base(appSettings, logger, telegramBotClient, memoryStorage)
         {
             _audioFileHandler = audioFileHandler;
-            _memoryStorage = memoryStorage;
         }
         public override async Task HandleAsync(Message message, CancellationToken ct)
         {

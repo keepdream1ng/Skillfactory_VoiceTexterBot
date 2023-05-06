@@ -43,7 +43,6 @@ namespace VoiceTexterBotApp
             services.AddTransient<IFileHandler, AudioFileHandler>();
             services.AddSingleton<IStorage, MemoryStorage>();
 
-
             // Регистрируем объект TelegramBotClient c токеном подключения
             services.AddSingleton<ITelegramBotClient>(provider => new TelegramBotClient(appSettings.BotToken));
             // Регистрируем постоянно активный сервис бота
