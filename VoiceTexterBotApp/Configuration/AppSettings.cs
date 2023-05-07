@@ -8,7 +8,7 @@
         public string BotToken { get; set; }
 
         /// <summary>
-        /// Folder path for download audio files.
+        /// Temporary folder path for download audio files.
         /// </summary>
         public string DownloadsFolder { get; set; }
 
