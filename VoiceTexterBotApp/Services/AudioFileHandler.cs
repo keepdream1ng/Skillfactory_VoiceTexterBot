@@ -9,17 +9,19 @@ namespace VoiceTexterBotApp.Services
     {
         private readonly AppSettings _appSettings;
         private readonly ITelegramBotClient _telegramBotClient;
+        private string _audioFilePath { get; }
 
         public AudioFileHandler(ITelegramBotClient telegramBotClient, AppSettings appSettings)
         {
             _appSettings = appSettings;
             _telegramBotClient = telegramBotClient;
+            _audioFilePath = Path.Combine(_appSettings.DownloadsFolder, $"{_appSettings.AudioFileName}{DateTime.Now.ToString("yyMMddHHss")}");
         }
 
         public async Task Download(string fileId, CancellationToken ct)
         {
             // Генерируем полный путь файла из конфигурации
-            string inputAudioFilePath = Path.Combine(_appSettings.DownloadsFolder, $"{_appSettings.AudioFileName}.{_appSettings.InputAudioFormat}");
+            string inputAudioFilePath = Path.Combine($"{_audioFilePath}.{_appSettings.InputAudioFormat}");
 
             using (FileStream destinationStream = File.Create(inputAudioFilePath))
             {
@@ -33,14 +35,19 @@ namespace VoiceTexterBotApp.Services
             }
         }
 
-        public string Process(string languageCode)
+        public async Task<string> Process(string languageCode)
         {
-            string inputAudioPath = Path.Combine(_appSettings.DownloadsFolder, $"{_appSettings.AudioFileName}.{_appSettings.InputAudioFormat}");
-            string outputAudioPath = Path.Combine(_appSettings.DownloadsFolder, $"{_appSettings.AudioFileName}.{_appSettings.OutputAudioFormat}");
+            string inputAudioPath = Path.Combine($"{_audioFilePath}.{_appSettings.InputAudioFormat}");
+            string outputAudioPath = Path.Combine($"{_audioFilePath}.{_appSettings.OutputAudioFormat}");
 
             AudioConverter.TryConvert(inputAudioPath, outputAudioPath);
 
             var speechText = SpeechDetector.DetectSpeech(outputAudioPath, _appSettings.InputAudioBitrate, languageCode);
+
+            // Asynchronous clean up.
+            Task.Run(() => File.Delete(inputAudioPath));
+            Task.Run(() => File.Delete(outputAudioPath));
+
             return speechText;
         }
     }

@@ -25,7 +25,7 @@ namespace VoiceTexterBotApp.Controllers
             _logger.Log($"Controller {GetType().Name} get an voice message.");
             await _audioFileHandler.Download(fileId, ct);
             _logger.Log($"Controller {GetType().Name} downloaded the file.");
-            var textResult = _audioFileHandler.Process(_memoryStorage.GetSession(message.Chat.Id).LanguageCode);
+            string textResult = await _audioFileHandler.Process(_memoryStorage.GetSession(message.Chat.Id).LanguageCode);
             _logger.Log($"Controller {GetType().Name} conversation result is:{Environment.NewLine}{textResult}.");
             await _telegramClient.SendTextMessageAsync(message.Chat.Id, textResult, cancellationToken: ct);
         }
