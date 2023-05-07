@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Configuration;
 using Telegram.Bot;
 using VoiceTexterBotApp.Configuration;
 using VoiceTexterBotApp.Controllers;
@@ -21,7 +22,11 @@ namespace VoiceTexterBotApp
             ISimpleLogger logService = new Logger();
 
             var host = new HostBuilder()
-                .ConfigureServices((hostContext, services) => ConfigureServices(services))
+                .ConfigureAppConfiguration((hostingContext, config) =>
+                {
+                    config.AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
+                })
+                .ConfigureServices((hostContext, services) => ConfigureServices(hostContext, services))
                 .ConfigureServices((hostContext, services) => services.AddSingleton(logService))
                 .UseConsoleLifetime()
                 .Build();
@@ -32,9 +37,10 @@ namespace VoiceTexterBotApp
             logService.Log("Service is stopped.");
         }
 
-        static void ConfigureServices(IServiceCollection services)
+        static void ConfigureServices(HostBuilderContext hostContext,IServiceCollection services)
         {
-            AppSettings appSettings = BuildAppSettings();
+
+            AppSettings appSettings = BuildAppSettings(hostContext);
             services.AddSingleton(appSettings);
             services.AddTransient<IDefaultMessageController, DefaultMessageController>();
             services.AddTransient<IVoiceMessageController, VoiceMessageController>();
@@ -48,10 +54,10 @@ namespace VoiceTexterBotApp
             // Регистрируем постоянно активный сервис бота
             services.AddHostedService<Bot>();
         }
-        static AppSettings BuildAppSettings()
+        static AppSettings BuildAppSettings(HostBuilderContext hostContext)
         {
-            string _jsonString = File.ReadAllText(Path.Combine(Extensions.DirectoryExtension.GetSolutionRoot(), "AppSettings.json"));
-            var settings = JsonSerializer.Deserialize<AppSettings>(_jsonString);
+            AppSettings settings = new();
+            hostContext.Configuration.Bind("AppSettings", settings);
             if (settings.BotToken == "INCERT_TOKEN_HERE")
             {
                 Console.WriteLine("You didnt adjust the AppSetting.json file, so input your bot token here:");
