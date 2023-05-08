@@ -22,10 +22,13 @@ namespace VoiceTexterBotApp.Controllers
                 return;
             }
 
+            // new instance of IFilehandler, since dependensy injection gives the same one every time.
+            IFileHandler AsyncFileHandler = new AudioFileHandler(_telegramClient, _appSettings);
+
             _logger.Log($"Controller {GetType().Name} get an voice message.");
-            await _audioFileHandler.Download(fileId, ct);
+            await AsyncFileHandler.Download(fileId, ct);
             _logger.Log($"Controller {GetType().Name} downloaded the file.");
-            string textResult = await _audioFileHandler.Process(_memoryStorage.GetSession(message.Chat.Id).LanguageCode);
+            string textResult = await AsyncFileHandler.Process(_memoryStorage.GetSession(message.Chat.Id).LanguageCode);
             _logger.Log($"Controller {GetType().Name} conversation result is:{Environment.NewLine}{textResult}.");
             await _telegramClient.SendTextMessageAsync(message.Chat.Id, textResult, cancellationToken: ct);
         }

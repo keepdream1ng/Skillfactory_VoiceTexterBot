@@ -8,7 +8,7 @@ namespace VoiceTexterBotApp.Controllers
 {
     public abstract class BaseController
     {
-        private readonly AppSettings _appSettings;
+        protected readonly AppSettings _appSettings;
         protected readonly ITelegramBotClient _telegramClient;
         protected readonly ISimpleLogger _logger;
         protected readonly IStorage _memoryStorage;
