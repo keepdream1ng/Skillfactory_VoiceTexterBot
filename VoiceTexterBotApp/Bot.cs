@@ -50,10 +50,11 @@ namespace VoiceTexterBotApp
 
         async Task HandleUpdateAsync(ITelegramBotClient botClient, Update update, CancellationToken cancellationToken)
         {
+            Thread.Sleep(100);
             //  Обрабатываем нажатия на кнопки  из Telegram Bot API: https://core.telegram.org/bots/api#callbackquery
             if (update.Type == UpdateType.CallbackQuery)
             {
-                await _inlineKeyboardController.HandleAsync(update.CallbackQuery, cancellationToken);
+                _inlineKeyboardController.HandleAsync(update.CallbackQuery, cancellationToken);
                 return;
             }
 
@@ -63,13 +64,13 @@ namespace VoiceTexterBotApp
                 switch (update.Message!.Type)
                 {
                     case MessageType.Voice:
-                        await _voiceMessageController.HandleAsync(update.Message, cancellationToken);
+                        _voiceMessageController.HandleAsync(update.Message, cancellationToken);
                         return;
                     case MessageType.Text:
-                        await _textMessageController.HandleAsync(update.Message, cancellationToken);
+                        _textMessageController.HandleAsync(update.Message, cancellationToken);
                         return;
                     default:
-                        await _defaultMessageController.HandleAsync(update.Message, cancellationToken);
+                        _defaultMessageController.HandleAsync(update.Message, cancellationToken);
                         return;
                 }
             }

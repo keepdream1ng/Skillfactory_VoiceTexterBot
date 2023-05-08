@@ -15,7 +15,7 @@ namespace VoiceTexterBotApp.Services
         {
             _appSettings = appSettings;
             _telegramBotClient = telegramBotClient;
-            _audioFilePath = Path.Combine(_appSettings.DownloadsFolder, $"{_appSettings.AudioFileName}{DateTime.Now.ToString("yyMMddHHss")}");
+            _audioFilePath = Path.Combine(_appSettings.DownloadsFolder, $"{_appSettings.AudioFileName}{Guid.NewGuid().ToString()}");
         }
 
         public async Task Download(string fileId, CancellationToken ct)
